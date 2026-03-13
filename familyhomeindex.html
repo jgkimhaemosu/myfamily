@@ -1,0 +1,1374 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="page-title">우리 가족 홈페이지</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --p:#FF6B6B;--p2:#FF8E53;--s:#4ECDC4;--s2:#3ab5ac;
+  --a:#FFD93D;--pu:#A29BFE;--g:#6FCF97;--o:#F39C12;
+  --bg:#FFF5F5;--card:#FFFFFF;--txt:#2D3436;--lt:#636E72;
+  --br:#E8EAED;--sh:0 4px 24px rgba(0,0,0,.08);--sh2:0 8px 32px rgba(0,0,0,.16);
+  --r:20px;--rs:12px
+}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:#fff;box-shadow:0 2px 16px rgba(0,0,0,.08);
+  padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:64px}
+.nav-logo{font-size:19px;font-weight:900;color:var(--p);cursor:pointer;display:flex;align-items:center;gap:8px;white-space:nowrap}
+.nav-links{display:flex;gap:4px;list-style:none}
+.nav-links li button{padding:8px 14px;border-radius:50px;color:var(--lt);font-size:13px;font-weight:600;
+  cursor:pointer;border:none;background:none;transition:all .2s;display:flex;align-items:center;gap:6px;font-family:inherit}
+.nav-links li button:hover,.nav-links li button.active{background:var(--p);color:#fff}
+
+/* SECTION */
+section{display:none;min-height:calc(100vh - 64px);padding:32px 24px;max-width:1100px;margin:0 auto;animation:fadeIn .3s ease}
+section.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;border-radius:50px;border:none;
+  font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;font-family:inherit}
+.btn-primary{background:var(--p);color:#fff}.btn-primary:hover{background:#e05555;transform:translateY(-2px);box-shadow:0 4px 16px rgba(255,107,107,.4)}
+.btn-secondary{background:var(--s);color:#fff}.btn-secondary:hover{background:var(--s2);transform:translateY(-2px)}
+.btn-white{background:#fff;color:var(--p);font-weight:700}
+.btn-outline{background:transparent;border:2px solid var(--p);color:var(--p)}
+.btn-outline:hover{background:var(--p);color:#fff}
+.btn-danger{background:#ff4757;color:#fff}.btn-danger:hover{background:#e03444}
+.btn-sm{padding:6px 14px;font-size:12px}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#FF6B6B,#FF8E53,#FFD93D);border-radius:var(--r);
+  padding:48px 40px;color:#fff;text-align:center;position:relative;overflow:hidden;margin-bottom:32px}
+.hero::before{content:'';position:absolute;top:-60px;right:-60px;width:220px;height:220px;
+  background:rgba(255,255,255,.1);border-radius:50%}
+.hero::after{content:'';position:absolute;bottom:-40px;left:-40px;width:160px;height:160px;
+  background:rgba(255,255,255,.08);border-radius:50%}
+.hero-emoji{font-size:64px;margin-bottom:12px;display:block}
+.hero h1{font-size:36px;font-weight:900;margin-bottom:12px;position:relative}
+.hero p{font-size:15px;opacity:.9;margin-bottom:24px;position:relative}
+
+/* QUICK NAV */
+.quick-nav{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px}
+.quick-card{background:#fff;border-radius:var(--r);padding:24px 16px;text-align:center;cursor:pointer;
+  transition:all .2s;box-shadow:var(--sh);border:2px solid transparent}
+.quick-card:hover{transform:translateY(-5px);box-shadow:var(--sh2);border-color:var(--p)}
+.quick-card .qicon{font-size:38px;margin-bottom:12px}
+.quick-card h3{font-size:15px;font-weight:800}
+.quick-card p{font-size:12px;color:var(--lt);margin-top:4px}
+
+/* SECTION HEADER */
+.sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.sec-hdr h2{font-size:22px;font-weight:900;display:flex;align-items:center;gap:8px}
+
+/* CARD */
+.card{background:#fff;border-radius:var(--r);padding:24px;box-shadow:var(--sh)}
+
+/* RECENT */
+.recent-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.recent-photos{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.recent-thumb{aspect-ratio:1;border-radius:var(--rs);overflow:hidden;cursor:pointer}
+.recent-thumb img{width:100%;height:100%;object-fit:cover;transition:transform .2s}
+.recent-thumb:hover img{transform:scale(1.06)}
+.recent-post{padding:11px 0;border-bottom:1px solid var(--br);cursor:pointer;transition:color .15s}
+.recent-post:last-child{border-bottom:none}
+.recent-post:hover{color:var(--p)}
+.recent-post .rpt{font-weight:700;font-size:14px;margin-bottom:3px}
+.recent-post .rpm{font-size:12px;color:var(--lt)}
+
+/* FAMILY */
+.fam-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:20px}
+.fam-card{background:#fff;border-radius:var(--r);padding:28px 20px 20px;text-align:center;
+  box-shadow:var(--sh);transition:all .2s;position:relative;overflow:hidden}
+.fam-card:hover{transform:translateY(-5px);box-shadow:var(--sh2)}
+.fam-card-top{position:absolute;top:0;left:0;right:0;height:6px;border-radius:20px 20px 0 0}
+.fam-avatar{width:82px;height:82px;border-radius:50%;margin:0 auto 14px;display:flex;
+  align-items:center;justify-content:center;font-size:42px;overflow:hidden;position:relative;cursor:pointer}
+.fam-avatar img{width:100%;height:100%;object-fit:cover}
+.fam-avatar .cam-btn{position:absolute;inset:0;background:rgba(0,0,0,.45);border-radius:50%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;
+  transition:opacity .2s;color:#fff;font-size:11px;font-weight:700;gap:3px}
+.fam-avatar .cam-btn i{font-size:18px}
+.fam-avatar:hover .cam-btn{opacity:1}
+.fam-photo-input{display:none}
+
+/* AVATAR PICKER */
+.av-modal{max-width:620px!important}
+.av-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:4px}
+.av-opt{border:3px solid transparent;border-radius:14px;cursor:pointer;padding:6px 4px;
+  text-align:center;transition:all .2s;background:var(--bg)}
+.av-opt:hover{border-color:var(--p);transform:scale(1.06)}
+.av-opt.sel{border-color:var(--p);background:rgba(255,107,107,.1);box-shadow:0 0 0 2px rgba(255,107,107,.3)}
+.av-opt svg{width:62px;height:62px;border-radius:50%;display:block;margin:0 auto}
+.av-label{font-size:10px;margin-top:5px;color:var(--lt);font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.av-photo-row{display:flex;align-items:center;gap:10px;padding:14px;background:var(--bg);border-radius:var(--rs);margin-top:16px}
+.av-photo-row p{font-size:13px;color:var(--lt);flex:1}
+.fam-card h3{font-size:18px;font-weight:900;margin-bottom:5px}
+.fam-role{font-size:12px;padding:3px 12px;border-radius:50px;display:inline-block;margin-bottom:12px;font-weight:700}
+.fam-bio{font-size:13px;color:var(--lt);line-height:1.65}
+.fam-actions{margin-top:14px;display:flex;gap:8px;justify-content:center}
+
+/* GALLERY */
+.gal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:14px}
+.gal-item{position:relative;border-radius:var(--rs);overflow:hidden;aspect-ratio:1;cursor:pointer;
+  box-shadow:var(--sh);transition:all .2s}
+.gal-item:hover{transform:scale(1.03);box-shadow:var(--sh2)}
+.gal-item img{width:100%;height:100%;object-fit:cover}
+.gal-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.7),transparent);
+  opacity:0;transition:opacity .2s;display:flex;align-items:flex-end;padding:12px;color:#fff;font-size:12px}
+.gal-item:hover .gal-overlay{opacity:1}
+.gal-del{position:absolute;top:8px;right:8px;background:rgba(255,71,87,.9);color:#fff;border:none;
+  width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:13px;display:none;
+  align-items:center;justify-content:center}
+.gal-item:hover .gal-del{display:flex}
+
+/* BOARD */
+.post-list{display:flex;flex-direction:column;gap:14px}
+.post-card{background:#fff;border-radius:var(--r);padding:22px;box-shadow:var(--sh);cursor:pointer;
+  transition:all .2s;border-left:4px solid var(--s)}
+.post-card:hover{transform:translateX(5px);box-shadow:var(--sh2)}
+.post-hdr{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.post-badge{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;background:var(--bg)}
+.post-meta{flex:1}.post-meta .pa{font-weight:800;font-size:14px}.post-meta .pd{font-size:12px;color:var(--lt)}
+.post-title{font-size:16px;font-weight:800;margin-bottom:7px}
+.post-prev{font-size:13px;color:var(--lt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.post-foot{display:flex;align-items:center;gap:12px;margin-top:10px;font-size:12px;color:var(--lt)}
+.post-full{background:#fff;border-radius:var(--r);padding:32px;box-shadow:var(--sh);margin-bottom:20px}
+.comments-box{background:#fff;border-radius:var(--r);padding:24px;box-shadow:var(--sh)}
+.cmt-item{padding:12px 0;border-bottom:1px solid var(--br);display:flex;gap:12px}
+.cmt-item:last-child{border-bottom:none}
+.cmt-body{flex:1}.cmt-auth{font-weight:800;font-size:13px}.cmt-txt{font-size:14px;margin-top:3px;line-height:1.55}
+.cmt-date{font-size:11px;color:var(--lt);margin-top:3px}
+.cmt-form{display:flex;gap:10px;margin-top:16px;align-items:flex-end}
+.cmt-form input,.cmt-form textarea{padding:10px 14px;border:2px solid var(--br);border-radius:var(--rs);
+  font-family:inherit;font-size:13px;outline:none;transition:border-color .2s;background:#fff;color:var(--txt)}
+.cmt-form input{flex:0 0 110px}
+.cmt-form textarea{flex:1;resize:none;height:42px}
+.cmt-form input:focus,.cmt-form textarea:focus{border-color:var(--s)}
+
+/* CALENDAR */
+.cal-wrap{background:#fff;border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;margin-bottom:24px}
+.cal-head{background:linear-gradient(135deg,var(--s),#3ab0aa);color:#fff;padding:18px 24px;
+  display:flex;align-items:center;justify-content:space-between}
+.cal-head h2{font-size:20px;font-weight:900}
+.cal-nav{background:rgba(255,255,255,.2);border:none;color:#fff;width:38px;height:38px;border-radius:50%;
+  cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.cal-nav:hover{background:rgba(255,255,255,.35)}
+.cal-body{padding:16px}
+.cal-dnames{display:grid;grid-template-columns:repeat(7,1fr);margin-bottom:6px}
+.cal-dn{text-align:center;font-size:12px;font-weight:800;color:var(--lt);padding:6px}
+.cal-dn:first-child{color:#e74c3c}.cal-dn:last-child{color:#3498db}
+.cal-cells{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.cal-cell{min-height:68px;padding:5px;border-radius:10px;cursor:pointer;transition:background .15s;position:relative}
+.cal-cell:hover{background:var(--bg)}
+.cal-cell.empty{cursor:default}.cal-cell.empty:hover{background:transparent}
+.cal-cell.today{background:rgba(255,107,107,.1)}
+.day-num{font-size:13px;font-weight:700;width:26px;height:26px;display:flex;align-items:center;justify-content:center;border-radius:50%}
+.cal-cell.today .day-num{background:var(--p);color:#fff}
+.cal-cells>.cal-cell:nth-child(7n+1) .day-num{color:#e74c3c}
+.cal-cells>.cal-cell:nth-child(7n) .day-num{color:#3498db}
+.ev-dot{font-size:10px;padding:1px 5px;border-radius:50px;color:#fff;margin-top:2px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;display:block}
+.ev-list{background:#fff;border-radius:var(--r);padding:22px;box-shadow:var(--sh)}
+.ev-item{display:flex;align-items:center;gap:14px;padding:11px 0;border-bottom:1px solid var(--br)}
+.ev-item:last-child{border-bottom:none}
+.ev-dot-big{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+.ev-info{flex:1}.ev-info .et{font-weight:800;font-size:14px}.ev-info .ed{font-size:12px;color:var(--lt)}
+
+/* MODAL */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;
+  align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.modal-bg.active{display:flex;animation:fadeIn .2s ease}
+.modal{background:#fff;border-radius:var(--r);padding:32px;width:90%;max-width:500px;
+  max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.22)}
+.modal-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}
+.modal-hdr h3{font-size:19px;font-weight:900}
+.modal-x{background:var(--br);border:none;width:32px;height:32px;border-radius:50%;cursor:pointer;
+  font-size:15px;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.modal-x:hover{background:var(--p);color:#fff}
+.fg{margin-bottom:15px}
+.fg label{display:block;font-size:11px;font-weight:800;color:var(--lt);margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px}
+.fg input,.fg textarea,.fg select{width:100%;padding:11px 15px;border:2px solid var(--br);
+  border-radius:var(--rs);font-family:inherit;font-size:14px;outline:none;transition:border-color .2s;
+  background:#fff;color:var(--txt)}
+.fg input:focus,.fg textarea:focus,.fg select:focus{border-color:var(--p)}
+.fg textarea{resize:vertical;min-height:90px}
+.emoji-grid{display:flex;flex-wrap:wrap;gap:7px;padding:10px;border:2px solid var(--br);border-radius:var(--rs)}
+.emo-opt{font-size:24px;cursor:pointer;padding:4px;border-radius:8px;transition:all .2s;border:2px solid transparent}
+.emo-opt.sel{border-color:var(--p);background:rgba(255,107,107,.1)}
+.emo-opt:hover{transform:scale(1.25)}
+.col-picker{display:flex;gap:8px;flex-wrap:wrap}
+.col-opt{width:30px;height:30px;border-radius:50%;cursor:pointer;border:3px solid transparent;transition:all .2s}
+.col-opt.sel{border-color:var(--txt);transform:scale(1.2)}
+.modal-foot{display:flex;gap:12px;justify-content:flex-end;margin-top:22px}
+
+/* LIGHTBOX */
+.lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:300;
+  align-items:center;justify-content:center;flex-direction:column}
+.lightbox.active{display:flex;animation:fadeIn .2s}
+.lightbox img{max-width:92vw;max-height:82vh;object-fit:contain;border-radius:var(--rs)}
+.lb-cap{color:#fff;margin-top:14px;font-size:15px}
+.lb-close{position:absolute;top:20px;right:20px;background:rgba(255,255,255,.15);border:none;
+  color:#fff;width:44px;height:44px;border-radius:50%;font-size:20px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;transition:background .2s}
+.lb-close:hover{background:rgba(255,255,255,.3)}
+
+/* EMPTY STATE */
+.empty-st{text-align:center;padding:60px 20px;color:var(--lt)}
+.empty-st .ei{font-size:58px;margin-bottom:14px}
+.empty-st h3{font-size:19px;font-weight:800;margin-bottom:7px}
+.empty-st p{font-size:14px}
+
+/* SETTINGS FAB */
+/* CLOUD BADGE */
+.fb-badge{display:none;align-items:center;gap:5px;padding:5px 12px;border-radius:50px;
+  font-size:12px;font-weight:700;color:#fff;cursor:pointer;border:none;transition:all .2s}
+.fb-badge:hover{opacity:.85;transform:scale(1.04)}
+.cloud-step{background:var(--bg);border-radius:var(--rs);padding:12px 16px;margin-bottom:10px;font-size:13px;line-height:1.7}
+.cloud-step b{color:var(--p)}
+.cloud-url-wrap{position:relative}
+.cloud-url-wrap input{padding-right:80px}
+.cloud-url-wrap .paste-btn{position:absolute;right:8px;top:50%;transform:translateY(-50%);
+  background:var(--s);color:#fff;border:none;padding:4px 10px;border-radius:50px;font-size:11px;font-weight:700;cursor:pointer}
+
+.fab{position:fixed;bottom:24px;right:24px;background:var(--p);color:#fff;border:none;
+  width:52px;height:52px;border-radius:50%;font-size:22px;cursor:pointer;
+  box-shadow:0 4px 20px rgba(255,107,107,.45);display:flex;align-items:center;justify-content:center;
+  transition:all .2s;z-index:50}
+.fab:hover{transform:rotate(90deg) scale(1.1)}
+
+/* PREVIEW */
+#photo-preview-wrap{display:none;margin-bottom:14px}
+#photo-preview-wrap img{max-width:100%;border-radius:var(--rs);max-height:200px;object-fit:contain}
+
+/* RESPONSIVE */
+@media(max-width:800px){
+  .nav-logo span:last-child{display:none}
+  .nav-links li button .nt{display:none}
+  .nav-links li button{padding:8px 10px}
+  section{padding:20px 14px}
+  .hero{padding:32px 20px}.hero h1{font-size:24px}
+  .quick-nav{grid-template-columns:repeat(2,1fr)}
+  .fam-grid{grid-template-columns:repeat(2,1fr)}
+  .gal-grid{grid-template-columns:repeat(2,1fr)}
+  .recent-grid{grid-template-columns:1fr}
+}
+@media(max-width:500px){
+  .fam-grid{grid-template-columns:1fr}
+  .recent-photos{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo" onclick="showSec('home')">
+    <span>🏠</span><span id="nav-name">우리 가족</span>
+  </div>
+  <button id="fb-badge" class="fb-badge" onclick="openCloudSetup()" title="클라우드 공유 설정" style="display:inline-flex;background:#aaa">☁️ 공유설정</button>
+  <ul class="nav-links">
+    <li><button onclick="showSec('home')" id="nb-home" class="active"><i class="fa-solid fa-house"></i><span class="nt"> 홈</span></button></li>
+    <li><button onclick="showSec('family')" id="nb-family"><i class="fa-solid fa-people-group"></i><span class="nt"> 가족소개</span></button></li>
+    <li><button onclick="showSec('gallery')" id="nb-gallery"><i class="fa-solid fa-images"></i><span class="nt"> 갤러리</span></button></li>
+    <li><button onclick="showSec('board')" id="nb-board"><i class="fa-solid fa-comments"></i><span class="nt"> 게시판</span></button></li>
+    <li><button onclick="showSec('calendar')" id="nb-calendar"><i class="fa-solid fa-calendar-days"></i><span class="nt"> 달력</span></button></li>
+  </ul>
+</nav>
+
+<!-- ===== HOME ===== -->
+<section id="home" class="active">
+  <div class="hero">
+    <span class="hero-emoji">👨‍👩‍👧‍👦</span>
+    <h1 id="hero-title">우리 가족 홈페이지에 오신 걸 환영합니다! 🎉</h1>
+    <p id="hero-sub">함께하는 모든 순간이 소중한 추억이 됩니다</p>
+    <button class="btn btn-white" onclick="showSec('gallery')"><i class="fa-solid fa-images"></i> 사진 보러 가기</button>
+  </div>
+  <!-- 클라우드 연결 배너 -->
+  <div id="cloud-banner" style="background:linear-gradient(135deg,#74b9ff,#0984e3);border-radius:16px;padding:20px 28px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
+    <div style="color:#fff">
+      <div style="font-size:18px;font-weight:800;margin-bottom:4px">☁️ 가족 공유 연결하기</div>
+      <div style="font-size:13px;opacity:.9">연결하면 가족 모두가 같은 홈페이지를 함께 사용할 수 있어요!</div>
+    </div>
+    <button onclick="openCloudSetup()" style="background:#fff;color:#0984e3;border:none;border-radius:50px;padding:12px 28px;font-size:15px;font-weight:800;cursor:pointer;white-space:nowrap;font-family:inherit">🔗 지금 연결하기</button>
+  </div>
+  <div class="quick-nav">
+    <div class="quick-card" onclick="showSec('family')"><div class="qicon">👨‍👩‍👧‍👦</div><h3>가족 소개</h3><p>우리 가족을 만나요</p></div>
+    <div class="quick-card" onclick="showSec('gallery')"><div class="qicon">📸</div><h3>갤러리</h3><p>추억 사진 모음</p></div>
+    <div class="quick-card" onclick="showSec('board')"><div class="qicon">💬</div><h3>게시판</h3><p>자유로운 이야기</p></div>
+    <div class="quick-card" onclick="showSec('calendar')"><div class="qicon">📅</div><h3>가족 달력</h3><p>함께하는 일정</p></div>
+  </div>
+  <div class="recent-grid">
+    <div class="card">
+      <div class="sec-hdr">
+        <h2>📸 최근 사진</h2>
+        <button class="btn btn-sm btn-secondary" onclick="showSec('gallery')">더 보기</button>
+      </div>
+      <div class="recent-photos" id="home-photos"></div>
+    </div>
+    <div class="card">
+      <div class="sec-hdr">
+        <h2>💬 최근 게시글</h2>
+        <button class="btn btn-sm btn-primary" onclick="showSec('board')">더 보기</button>
+      </div>
+      <div id="home-posts"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FAMILY ===== -->
+<section id="family">
+  <div class="sec-hdr">
+    <h2>👨‍👩‍👧‍👦 가족 소개</h2>
+    <button class="btn btn-primary" onclick="openFamModal()"><i class="fa-solid fa-plus"></i> 가족 추가</button>
+  </div>
+  <div class="fam-grid" id="fam-grid"></div>
+</section>
+
+<!-- ===== GALLERY ===== -->
+<section id="gallery">
+  <div class="sec-hdr">
+    <h2>📸 사진 갤러리</h2>
+    <button class="btn btn-primary" onclick="openGalModal()"><i class="fa-solid fa-plus"></i> 사진 추가</button>
+  </div>
+  <div class="gal-grid" id="gal-grid"></div>
+  <div id="gal-empty" class="empty-st" style="display:none">
+    <div class="ei">📷</div><h3>아직 사진이 없어요</h3><p>소중한 순간을 기록해 보세요!</p>
+  </div>
+</section>
+
+<!-- ===== BOARD ===== -->
+<section id="board">
+  <div id="board-list">
+    <div class="sec-hdr">
+      <h2>💬 자유 게시판</h2>
+      <button class="btn btn-primary" onclick="openPostModal()"><i class="fa-solid fa-pen"></i> 글 쓰기</button>
+    </div>
+    <div class="post-list" id="post-list"></div>
+    <div id="board-empty" class="empty-st" style="display:none">
+      <div class="ei">💭</div><h3>아직 게시글이 없어요</h3><p>가족에게 하고 싶은 말을 남겨 보세요!</p>
+    </div>
+  </div>
+  <div id="board-detail" style="display:none">
+    <button class="btn btn-outline btn-sm" onclick="backToList()" style="margin-bottom:16px">
+      <i class="fa-solid fa-arrow-left"></i> 목록으로
+    </button>
+    <div class="post-full" id="post-full"></div>
+    <div class="comments-box">
+      <h3 style="font-size:16px;font-weight:900;margin-bottom:14px">💬 댓글</h3>
+      <div id="cmt-list"></div>
+      <div class="cmt-form">
+        <input type="text" id="cmt-auth" placeholder="이름" maxlength="10">
+        <textarea id="cmt-txt" placeholder="댓글을 입력하세요..."></textarea>
+        <button class="btn btn-secondary btn-sm" onclick="addCmt()" style="white-space:nowrap">등록</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CALENDAR ===== -->
+<section id="calendar">
+  <div class="sec-hdr">
+    <h2>📅 가족 달력</h2>
+    <button class="btn btn-primary" onclick="openEvModal()"><i class="fa-solid fa-plus"></i> 일정 추가</button>
+  </div>
+  <div class="cal-wrap">
+    <div class="cal-head">
+      <button class="cal-nav" onclick="chgMonth(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+      <h2 id="cal-title"></h2>
+      <button class="cal-nav" onclick="chgMonth(1)"><i class="fa-solid fa-chevron-right"></i></button>
+    </div>
+    <div class="cal-body">
+      <div class="cal-dnames">
+        <div class="cal-dn">일</div><div class="cal-dn">월</div><div class="cal-dn">화</div>
+        <div class="cal-dn">수</div><div class="cal-dn">목</div><div class="cal-dn">금</div><div class="cal-dn">토</div>
+      </div>
+      <div class="cal-cells" id="cal-cells"></div>
+    </div>
+  </div>
+  <div class="ev-list">
+    <h3 style="font-size:16px;font-weight:900;margin-bottom:14px">🗓️ 이번 달 일정</h3>
+    <div id="ev-list-cont"></div>
+  </div>
+</section>
+
+<!-- ===== MODALS ===== -->
+
+<!-- Family Modal -->
+<div class="modal-bg" id="m-family">
+  <div class="modal">
+    <div class="modal-hdr">
+      <h3 id="m-fam-title">👤 가족 추가</h3>
+      <button class="modal-x" onclick="closeM('m-family')">✕</button>
+    </div>
+    <div class="fg"><label>이름</label><input type="text" id="fm-name" placeholder="이름을 입력하세요"></div>
+    <div class="fg"><label>역할</label>
+      <select id="fm-role">
+        <option>아빠</option><option>엄마</option><option>아들</option><option>딸</option>
+        <option>할아버지</option><option>할머니</option><option>형</option><option>오빠</option>
+        <option>누나</option><option>언니</option><option>남동생</option><option>여동생</option>
+      </select>
+    </div>
+    <div class="fg"><label>소개</label><textarea id="fm-bio" placeholder="간단한 소개를 써주세요"></textarea></div>
+    <div class="fg"><label>이모지 아바타</label><div class="emoji-grid" id="emo-pick"></div></div>
+    <div class="fg"><label>테마 색상</label><div class="col-picker" id="col-pick-fam"></div></div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" onclick="closeM('m-family')">취소</button>
+      <button class="btn btn-primary" onclick="saveFam()">저장</button>
+    </div>
+  </div>
+</div>
+
+<!-- Gallery Modal -->
+<div class="modal-bg" id="m-gallery">
+  <div class="modal">
+    <div class="modal-hdr">
+      <h3>📷 사진 추가</h3>
+      <button class="modal-x" onclick="closeM('m-gallery')">✕</button>
+    </div>
+    <div class="fg"><label>사진 파일 업로드</label><input type="file" id="gal-file" accept="image/*" onchange="prevPhoto(this)"></div>
+    <div id="photo-preview-wrap"><img id="photo-prev" src="" alt="미리보기"></div>
+    <div class="fg"><label>또는 사진 URL 입력</label><input type="url" id="gal-url" placeholder="https://example.com/photo.jpg"></div>
+    <div class="fg"><label>캡션 (설명)</label><input type="text" id="gal-cap" placeholder="사진에 대한 설명"></div>
+    <div class="fg"><label>올린 사람</label><input type="text" id="gal-who" placeholder="이름"></div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" onclick="closeM('m-gallery')">취소</button>
+      <button class="btn btn-primary" onclick="savePhoto()">저장</button>
+    </div>
+  </div>
+</div>
+
+<!-- Post Modal -->
+<div class="modal-bg" id="m-post">
+  <div class="modal">
+    <div class="modal-hdr">
+      <h3>✏️ 글 쓰기</h3>
+      <button class="modal-x" onclick="closeM('m-post')">✕</button>
+    </div>
+    <div class="fg"><label>작성자</label><input type="text" id="p-auth" placeholder="이름"></div>
+    <div class="fg"><label>제목</label><input type="text" id="p-title" placeholder="제목을 입력하세요"></div>
+    <div class="fg"><label>내용</label><textarea id="p-cont" placeholder="내용을 입력하세요" style="min-height:140px"></textarea></div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" onclick="closeM('m-post')">취소</button>
+      <button class="btn btn-primary" onclick="savePost()">게시하기</button>
+    </div>
+  </div>
+</div>
+
+<!-- Event Modal -->
+<div class="modal-bg" id="m-event">
+  <div class="modal">
+    <div class="modal-hdr">
+      <h3>🗓️ 일정 추가</h3>
+      <button class="modal-x" onclick="closeM('m-event')">✕</button>
+    </div>
+    <div class="fg"><label>일정 제목</label><input type="text" id="ev-title" placeholder="예: 엄마 생일 🎂"></div>
+    <div class="fg"><label>날짜</label><input type="date" id="ev-date"></div>
+    <div class="fg"><label>메모 (선택)</label><input type="text" id="ev-desc" placeholder="간단한 메모"></div>
+    <div class="fg"><label>색상</label><div class="col-picker" id="col-pick-ev"></div></div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" onclick="closeM('m-event')">취소</button>
+      <button class="btn btn-primary" onclick="saveEv()">저장</button>
+    </div>
+  </div>
+</div>
+
+<!-- Settings Modal -->
+<div class="modal-bg" id="m-settings">
+  <div class="modal">
+    <div class="modal-hdr">
+      <h3>⚙️ 홈페이지 설정</h3>
+      <button class="modal-x" onclick="closeM('m-settings')">✕</button>
+    </div>
+    <div class="fg"><label>가족 이름</label><input type="text" id="s-name" placeholder="예: 행복한 김씨 가족"></div>
+    <div class="fg"><label>환영 메시지</label><input type="text" id="s-msg" placeholder="예: 함께해서 행복해요!"></div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" onclick="closeM('m-settings')">취소</button>
+      <button class="btn btn-primary" onclick="saveSettings()">저장</button>
+    </div>
+  </div>
+</div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" onclick="closeLB()">
+  <button class="lb-close" onclick="closeLB()">✕</button>
+  <img id="lb-img" src="" alt="">
+  <div class="lb-cap" id="lb-cap"></div>
+</div>
+
+<!-- Avatar Picker Modal -->
+<div class="modal-bg" id="m-avatar">
+  <div class="modal av-modal">
+    <div class="modal-hdr">
+      <h3>😊 오늘의 아바타 선택</h3>
+      <button class="modal-x" onclick="closeM('m-avatar')">✕</button>
+    </div>
+    <p style="font-size:13px;color:var(--lt);margin-bottom:14px">오늘의 기분이나 컨디션에 맞는 아바타를 골라보세요!</p>
+    <div class="av-grid" id="av-grid"></div>
+    <div class="av-photo-row">
+      <span style="font-size:22px">📷</span>
+      <p>실제 사진으로 바꾸고 싶다면 버튼을 눌러 업로드하세요</p>
+      <input type="file" id="av-photo-input" accept="image/*" style="display:none" onchange="onAvatarPhotoUpload(this)">
+      <button class="btn btn-outline btn-sm" onclick="document.getElementById('av-photo-input').click()">사진 올리기</button>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" onclick="closeM('m-avatar')">취소</button>
+    </div>
+  </div>
+</div>
+
+<!-- Cloud Setup Modal -->
+<div class="modal-bg" id="m-cloud">
+  <div class="modal" style="max-width:520px">
+    <div class="modal-hdr">
+      <h3>☁️ 가족 클라우드 공유 설정</h3>
+      <button class="modal-x" onclick="closeM('m-cloud')">✕</button>
+    </div>
+    <div id="cloud-new-section">
+      <p style="font-size:14px;color:var(--lt);margin-bottom:16px">처음 사용하시나요? 버튼 하나로 바로 시작!</p>
+      <button onclick="createNewCloud()" id="cloud-create-btn" class="btn btn-primary" style="width:100%;justify-content:center;font-size:15px;padding:16px;margin-bottom:20px">
+        ✨ 새 공유 공간 만들기
+      </button>
+      <div style="text-align:center;color:var(--lt);font-size:12px;margin-bottom:16px">— 또는 기존 공유 ID가 있으면 아래에 입력 —</div>
+    </div>
+    <div class="fg">
+      <label>공유 ID (가족에게 받은 ID)</label>
+      <input type="text" id="jb-bin-input" placeholder="예: 1234567890123456789">
+    </div>
+    <div id="cloud-status" style="font-size:13px;margin:10px 0;display:none"></div>
+    <div id="cloud-share-box" style="display:none;background:#e8f5e9;border-radius:12px;padding:14px;margin-bottom:12px">
+      <div style="font-size:13px;font-weight:700;color:#2e7d32;margin-bottom:6px">✅ 연결 완료! 가족에게 이 ID를 공유하세요:</div>
+      <div id="cloud-share-id" style="font-family:monospace;font-size:14px;background:#fff;padding:8px 12px;border-radius:8px;word-break:break-all"></div>
+      <button onclick="copyShareId()" class="btn btn-sm" style="margin-top:8px;background:#2e7d32;color:#fff">📋 ID 복사하기</button>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-outline btn-sm" onclick="disconnectCloud()" style="color:#ff7675;border-color:#ff7675">연결 해제</button>
+      <button class="btn btn-outline" onclick="closeM('m-cloud')">닫기</button>
+      <button class="btn btn-secondary" id="cloud-connect-btn" onclick="connectCloud()">☁️ 연결하기</button>
+    </div>
+  </div>
+</div>
+
+<!-- Settings FAB -->
+<button class="fab" onclick="openSettings()" title="설정">⚙️</button>
+
+<script>
+// ============================================================
+//  DATA
+// ============================================================
+const SK = {fam:'ff3_fam',gal:'ff3_gal',board:'ff3_board',ev:'ff3_ev',set:'ff3_set'};
+function ld(k){try{return JSON.parse(localStorage.getItem(k)||'null')}catch(e){return null}}
+function sd(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){alert('저장 공간 부족! 일부 사진을 삭제해 보세요.')} if(window.fbWrite) window.fbWrite(k,v);}
+
+const DEFAULT_FAM = [
+  {id:1,name:'Papa',role:'아빠',bio:'우리 가족의 든든한 기둥! 주말엔 등산을 즐겨요 🏔️',emoji:'👨',color:'#FF6B6B',avatarMood:0},
+  {id:2,name:'Mama',role:'엄마',bio:'맛있는 요리로 가족을 행복하게 해주는 우리 엄마 ❤️',emoji:'👩',color:'#4ECDC4',avatarMood:2},
+  {id:3,name:'Su',role:'딸',bio:'그림 그리기와 독서를 좋아하는 귀여운 Su 🎨',emoji:'👧',color:'#FFD93D',avatarMood:8},
+  {id:4,name:'Ji',role:'딸',bio:'밝고 활발한 에너지로 가족을 웃게 만드는 Ji 😄',emoji:'👧',color:'#A29BFE',avatarMood:1},
+  {id:5,name:'Seung',role:'아들',bio:'온 가족의 사랑을 한 몸에 받는 귀염둥이 Seung 🌟',emoji:'👦',color:'#55EFC4',avatarMood:14},
+];
+
+let fam   = ld(SK.fam)   || DEFAULT_FAM;
+let gal   = ld(SK.gal)   || [];
+let board = ld(SK.board)  || [];
+let evts  = ld(SK.ev)     || [];
+let cfg   = ld(SK.set)    || {name:'우리 가족',msg:'함께하는 모든 순간이 소중한 추억이 됩니다'};
+
+if(!ld(SK.fam)) sd(SK.fam, fam);
+
+let curSec   = 'home';
+let curPost  = null;
+let editFamId= null;
+let selEmoji = '😊';
+let selCol   = '#FF6B6B';
+let selEvCol = '#FF6B6B';
+let photoB64 = null;
+let calDate  = new Date();
+
+const EMOJIS = ['👨','👩','👦','👧','👴','👵','🧑','👶','😊','😎','🤓','😇','🥰','😄','🤩','🦸','🧙','🐱','🐶','🐼'];
+const COLORS = ['#FF6B6B','#4ECDC4','#FFD93D','#A29BFE','#FF8E53','#55EFC4','#FD79A8','#6C5CE7','#00CEC9','#FDCB6E','#E17055','#74B9FF'];
+
+// ============================================================
+//  NAVIGATION
+// ============================================================
+function showSec(name){
+  document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-links button').forEach(b=>b.classList.remove('active'));
+  document.getElementById(name).classList.add('active');
+  document.getElementById('nb-'+name).classList.add('active');
+  curSec = name;
+  if(name==='home')    renderHome();
+  if(name==='family')  renderFam();
+  if(name==='gallery') renderGal();
+  if(name==='board')   renderBoard();
+  if(name==='calendar')renderCal();
+  window.scrollTo(0,0);
+}
+
+// ============================================================
+//  HOME
+// ============================================================
+function renderHome(){
+  document.getElementById('nav-name').textContent = cfg.name;
+  document.getElementById('hero-title').textContent = cfg.name + ' 홈페이지에 오신 걸 환영합니다! 🎉';
+  document.getElementById('hero-sub').textContent = cfg.msg;
+  document.title = cfg.name + ' 홈페이지';
+  // 클라우드 배너: 연결되면 숨김
+  const banner = document.getElementById('cloud-banner');
+  if(banner) banner.style.display = localStorage.getItem('blob_id') ? 'none' : 'flex';
+
+  // Recent photos
+  const ph = gal.slice().reverse().slice(0,6);
+  const phEl = document.getElementById('home-photos');
+  phEl.innerHTML = ph.length===0
+    ? '<div style="grid-column:1/-1;text-align:center;color:var(--lt);font-size:13px;padding:12px">📷 아직 사진이 없어요</div>'
+    : ph.map(p=>`<div class="recent-thumb" onclick="showSec('gallery')"><img src="${p.src}" alt="${esc(p.cap)}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22%3E%3Crect width=%22100%25%22 height=%22100%25%22 fill=%22%23f0f0f0%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2228%22%3E📷%3C/text%3E%3C/svg%3E'"></div>`).join('');
+
+  // Recent posts
+  const ps = board.slice().reverse().slice(0,5);
+  const psEl = document.getElementById('home-posts');
+  psEl.innerHTML = ps.length===0
+    ? '<div style="text-align:center;color:var(--lt);font-size:13px;padding:12px">💬 아직 게시글이 없어요</div>'
+    : ps.map(p=>`<div class="recent-post" onclick="openPostDetail(${p.id})"><div class="rpt">${esc(p.title)}</div><div class="rpm">${esc(p.auth)} · ${fmtDate(p.date)}</div></div>`).join('');
+}
+
+// ============================================================
+//  FAMILY
+// ============================================================
+function renderFam(){
+  const g = document.getElementById('fam-grid');
+  if(fam.length===0){
+    g.innerHTML='<div class="empty-st" style="grid-column:1/-1"><div class="ei">👥</div><h3>가족 구성원을 추가해보세요!</h3><p>우리 가족을 소개해요</p></div>';
+    return;
+  }
+  g.innerHTML = fam.map(m=>`
+    <div class="fam-card">
+      <div class="fam-card-top" style="background:${m.color}"></div>
+      <div class="fam-avatar" style="background:${m.color}22" onclick="openAvatarPicker(${m.id})">
+        ${m.photo
+          ? `<img src="${m.photo}" alt="${esc(m.name)}">`
+          : genAvatar(m.role, m.avatarMood !== undefined ? m.avatarMood : 0)}
+        <div class="cam-btn"><i class="fa-solid fa-face-smile"></i>아바타 변경</div>
+      </div>
+      <h3>${esc(m.name)}</h3>
+      <div class="fam-role" style="background:${m.color}22;color:${m.color}">${esc(m.role)}</div>
+      <p class="fam-bio">${esc(m.bio)}</p>
+      <div class="fam-actions">
+        <button class="btn btn-sm btn-outline" onclick="editFam(${m.id})" style="font-size:11px">✏️ 수정</button>
+        <button class="btn btn-sm btn-danger" onclick="delFam(${m.id})" style="font-size:11px">🗑️ 삭제</button>
+      </div>
+    </div>`).join('');
+}
+
+function openFamModal(editId=null){
+  editFamId = editId;
+  const m = editId ? fam.find(x=>x.id===editId) : null;
+  document.getElementById('m-fam-title').textContent = editId ? '👤 가족 수정' : '👤 가족 추가';
+  document.getElementById('fm-name').value  = m ? m.name : '';
+  document.getElementById('fm-role').value  = m ? m.role : '아빠';
+  document.getElementById('fm-bio').value   = m ? m.bio  : '';
+  selEmoji = m ? m.emoji : '😊';
+  selCol   = m ? m.color : '#FF6B6B';
+
+  document.getElementById('emo-pick').innerHTML = EMOJIS.map(e=>
+    `<span class="emo-opt ${e===selEmoji?'sel':''}" onclick="pickEmoji('${e}',this)">${e}</span>`).join('');
+  document.getElementById('col-pick-fam').innerHTML = COLORS.map(c=>
+    `<div class="col-opt ${c===selCol?'sel':''}" style="background:${c}" onclick="pickCol('${c}',this,'fam')"></div>`).join('');
+  openM('m-family');
+}
+function editFam(id){openFamModal(id)}
+function onFamPhotoChange(id, input){
+  const file = input.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const idx = fam.findIndex(m=>m.id===id);
+    if(idx===-1) return;
+    fam[idx].photo = e.target.result;
+    try { sd(SK.fam, fam); } catch(err) { alert('사진 용량이 너무 큽니다. 작은 사진으로 시도해 보세요.'); fam[idx].photo=null; return; }
+    renderFam();
+  };
+  reader.readAsDataURL(file);
+}
+function delFam(id){
+  if(!confirm('이 가족 구성원을 삭제할까요?'))return;
+  fam = fam.filter(m=>m.id!==id);
+  sd(SK.fam,fam); renderFam();
+}
+function saveFam(){
+  const name = document.getElementById('fm-name').value.trim();
+  const role = document.getElementById('fm-role').value;
+  const bio  = document.getElementById('fm-bio').value.trim();
+  if(!name){alert('이름을 입력해주세요');return}
+  if(editFamId){
+    const i = fam.findIndex(m=>m.id===editFamId);
+    fam[i] = {...fam[i],name,role,bio,emoji:selEmoji,color:selCol};
+  } else {
+    fam.push({id:Date.now(),name,role,bio,emoji:selEmoji,color:selCol});
+  }
+  sd(SK.fam,fam); closeM('m-family'); renderFam();
+}
+function pickEmoji(e,el){
+  selEmoji=e;
+  document.querySelectorAll('.emo-opt').forEach(x=>x.classList.remove('sel'));
+  el.classList.add('sel');
+}
+function pickCol(c,el,type){
+  if(type==='fam') selCol=c; else selEvCol=c;
+  el.closest('.col-picker').querySelectorAll('.col-opt').forEach(x=>x.classList.remove('sel'));
+  el.classList.add('sel');
+}
+
+// ============================================================
+//  GALLERY
+// ============================================================
+function renderGal(){
+  const g = document.getElementById('gal-grid');
+  const e = document.getElementById('gal-empty');
+  if(gal.length===0){g.innerHTML='';e.style.display='block';return}
+  e.style.display='none';
+  g.innerHTML = gal.slice().reverse().map(p=>`
+    <div class="gal-item">
+      <img src="${p.src}" alt="${esc(p.cap)}" loading="lazy"
+           onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22%3E%3Crect width=%22100%25%22 height=%22100%25%22 fill=%22%23f0f0f0%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-size=%2250%22%3E📷%3C/text%3E%3C/svg%3E'"
+           onclick="openLB('${escA(p.src)}','${escA(p.cap)}')">
+      <div class="gal-overlay">${p.cap ? esc(p.cap) : ''}</div>
+      <button class="gal-del" onclick="delPhoto(${p.id});event.stopPropagation()">✕</button>
+    </div>`).join('');
+}
+
+function prevPhoto(input){
+  const f = input.files[0];
+  if(!f)return;
+  const r = new FileReader();
+  r.onload = e=>{
+    photoB64 = e.target.result;
+    document.getElementById('photo-prev').src = photoB64;
+    document.getElementById('photo-preview-wrap').style.display='block';
+    document.getElementById('gal-url').value='';
+  };
+  r.readAsDataURL(f);
+}
+function openGalModal(){
+  photoB64=null;
+  ['gal-file','gal-url','gal-cap','gal-who'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el.type==='file') el.value=''; else el.value='';
+  });
+  document.getElementById('photo-preview-wrap').style.display='none';
+  openM('m-gallery');
+}
+function savePhoto(){
+  const src = photoB64 || document.getElementById('gal-url').value.trim();
+  const cap = document.getElementById('gal-cap').value.trim();
+  const who = document.getElementById('gal-who').value.trim();
+  if(!src){alert('사진을 선택하거나 URL을 입력해주세요');return}
+  const item = {id:Date.now(),src,cap:cap||'사진',who:who||'가족',date:new Date().toISOString()};
+  gal.push(item);
+  try{sd(SK.gal,gal)}catch(e){gal.pop();alert('저장 공간 부족! URL로 추가해 보세요.');return}
+  closeM('m-gallery'); renderGal(); renderHome();
+}
+function delPhoto(id){
+  if(!confirm('이 사진을 삭제할까요?'))return;
+  gal = gal.filter(p=>p.id!==id);
+  sd(SK.gal,gal); renderGal(); renderHome();
+}
+function openLB(src,cap){
+  document.getElementById('lb-img').src = src;
+  document.getElementById('lb-cap').textContent = decodeEntities(cap);
+  document.getElementById('lightbox').classList.add('active');
+  document.body.style.overflow='hidden';
+}
+function closeLB(){
+  document.getElementById('lightbox').classList.remove('active');
+  document.body.style.overflow='';
+}
+function decodeEntities(s){
+  const t=document.createElement('textarea');t.innerHTML=s;return t.value;
+}
+
+// ============================================================
+//  BOARD
+// ============================================================
+function renderBoard(){
+  document.getElementById('board-list').style.display='block';
+  document.getElementById('board-detail').style.display='none';
+  const list = document.getElementById('post-list');
+  const empty= document.getElementById('board-empty');
+  if(board.length===0){list.innerHTML='';empty.style.display='block';return}
+  empty.style.display='none';
+  list.innerHTML = board.slice().reverse().map(p=>{
+    const mb = fam.find(m=>m.name===p.auth);
+    const emoji = mb?mb.emoji:'💬';
+    const color = mb?mb.color:'var(--s)';
+    return `
+    <div class="post-card" onclick="openPostDetail(${p.id})" style="border-left-color:${color}">
+      <div class="post-hdr">
+        <div class="post-badge">${emoji}</div>
+        <div class="post-meta"><div class="pa">${esc(p.auth)}</div><div class="pd">${fmtDate(p.date)}</div></div>
+        <button onclick="delPost(${p.id});event.stopPropagation()" style="background:none;border:none;cursor:pointer;color:var(--lt);font-size:15px" title="삭제">🗑️</button>
+      </div>
+      <div class="post-title">${esc(p.title)}</div>
+      <div class="post-prev">${esc(p.cont)}</div>
+      <div class="post-foot"><span>💬 댓글 ${p.cmts?p.cmts.length:0}개</span></div>
+    </div>`;
+  }).join('');
+}
+
+function openPostDetail(id){
+  if(curSec!=='board'){
+    curPost=id;
+    showSec('board');
+    setTimeout(()=>_showDetail(id),60);
+  } else {
+    _showDetail(id);
+  }
+}
+function _showDetail(id){
+  curPost=id;
+  const p = board.find(x=>x.id===id);
+  if(!p)return;
+  const mb = fam.find(m=>m.name===p.auth);
+  const emoji = mb?mb.emoji:'💬';
+  document.getElementById('post-full').innerHTML=`
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px">
+      <div style="font-size:44px">${emoji}</div>
+      <div>
+        <div style="font-size:21px;font-weight:900">${esc(p.title)}</div>
+        <div style="font-size:13px;color:var(--lt)">${esc(p.auth)} · ${fmtDate(p.date)}</div>
+      </div>
+    </div>
+    <div style="font-size:15px;line-height:1.85;white-space:pre-wrap">${esc(p.cont)}</div>`;
+  renderCmts(p);
+  document.getElementById('board-list').style.display='none';
+  document.getElementById('board-detail').style.display='block';
+  window.scrollTo(0,0);
+}
+function renderCmts(p){
+  const el = document.getElementById('cmt-list');
+  if(!p.cmts||p.cmts.length===0){
+    el.innerHTML='<p style="color:var(--lt);font-size:13px;padding:10px 0">첫 댓글을 남겨보세요! 😊</p>';
+    return;
+  }
+  el.innerHTML = p.cmts.map(c=>`
+    <div class="cmt-item">
+      <div style="font-size:22px">💬</div>
+      <div class="cmt-body">
+        <div class="cmt-auth">${esc(c.auth)}</div>
+        <div class="cmt-txt">${esc(c.txt)}</div>
+        <div class="cmt-date">${fmtDate(c.date)}</div>
+      </div>
+      <button onclick="delCmt(${c.id})" style="background:none;border:none;cursor:pointer;color:var(--lt);font-size:13px">✕</button>
+    </div>`).join('');
+}
+function addCmt(){
+  const auth = document.getElementById('cmt-auth').value.trim();
+  const txt  = document.getElementById('cmt-txt').value.trim();
+  if(!auth||!txt){alert('이름과 댓글을 모두 입력해주세요');return}
+  const p = board.find(x=>x.id===curPost);
+  if(!p)return;
+  if(!p.cmts) p.cmts=[];
+  p.cmts.push({id:Date.now(),auth,txt,date:new Date().toISOString()});
+  sd(SK.board,board);
+  document.getElementById('cmt-auth').value='';
+  document.getElementById('cmt-txt').value='';
+  renderCmts(p);
+}
+function delCmt(id){
+  const p = board.find(x=>x.id===curPost);
+  if(!p||!p.cmts)return;
+  p.cmts = p.cmts.filter(c=>c.id!==id);
+  sd(SK.board,board); renderCmts(p);
+}
+function backToList(){
+  curPost=null;
+  document.getElementById('board-list').style.display='block';
+  document.getElementById('board-detail').style.display='none';
+  renderBoard();
+}
+function openPostModal(){
+  ['p-auth','p-title','p-cont'].forEach(id=>document.getElementById(id).value='');
+  openM('m-post');
+}
+function savePost(){
+  const auth  = document.getElementById('p-auth').value.trim();
+  const title = document.getElementById('p-title').value.trim();
+  const cont  = document.getElementById('p-cont').value.trim();
+  if(!auth||!title||!cont){alert('모든 항목을 입력해주세요');return}
+  board.push({id:Date.now(),auth,title,cont,date:new Date().toISOString(),cmts:[]});
+  sd(SK.board,board); closeM('m-post'); renderBoard(); renderHome();
+}
+function delPost(id){
+  if(!confirm('이 게시글을 삭제할까요?'))return;
+  board = board.filter(p=>p.id!==id);
+  sd(SK.board,board); renderBoard(); renderHome();
+}
+
+// ============================================================
+//  CALENDAR
+// ============================================================
+function renderCal(){
+  const y = calDate.getFullYear();
+  const mo= calDate.getMonth();
+  document.getElementById('cal-title').textContent = `${y}년 ${mo+1}월`;
+  const first = new Date(y,mo,1).getDay();
+  const days  = new Date(y,mo+1,0).getDate();
+  const today = new Date();
+  let html='';
+  for(let i=0;i<first;i++) html+='<div class="cal-cell empty"></div>';
+  for(let d=1;d<=days;d++){
+    const ds = `${y}-${String(mo+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const isT= today.getFullYear()===y && today.getMonth()===mo && today.getDate()===d;
+    const de = evts.filter(e=>e.date===ds);
+    html+=`<div class="cal-cell ${isT?'today':''}" onclick="openEvModal('${ds}')">
+      <div class="day-num">${d}</div>
+      ${de.slice(0,2).map(e=>`<span class="ev-dot" style="background:${e.color}">${esc(e.title)}</span>`).join('')}
+      ${de.length>2?`<span style="font-size:10px;color:var(--lt)">+${de.length-2}</span>`:''}
+    </div>`;
+  }
+  document.getElementById('cal-cells').innerHTML=html;
+
+  const mo_evts = evts.filter(e=>e.date.startsWith(`${y}-${String(mo+1).padStart(2,'0')}`))
+    .sort((a,b)=>a.date.localeCompare(b.date));
+  const evEl = document.getElementById('ev-list-cont');
+  if(mo_evts.length===0){
+    evEl.innerHTML='<p style="color:var(--lt);font-size:13px;text-align:center;padding:16px 0">이번 달 일정이 없어요</p>';
+  } else {
+    evEl.innerHTML = mo_evts.map(e=>`
+      <div class="ev-item">
+        <div class="ev-dot-big" style="background:${e.color}"></div>
+        <div class="ev-info">
+          <div class="et">${esc(e.title)}</div>
+          <div class="ed">${fmtDateSimple(e.date)}${e.desc?' · '+esc(e.desc):''}</div>
+        </div>
+        <button onclick="delEv(${e.id})" style="background:none;border:none;cursor:pointer;color:var(--lt)">🗑️</button>
+      </div>`).join('');
+  }
+}
+function chgMonth(d){calDate.setMonth(calDate.getMonth()+d);renderCal()}
+function openEvModal(dateStr=null){
+  document.getElementById('ev-title').value='';
+  document.getElementById('ev-date').value = dateStr||new Date().toISOString().split('T')[0];
+  document.getElementById('ev-desc').value='';
+  selEvCol = COLORS[0];
+  document.getElementById('col-pick-ev').innerHTML = COLORS.map((c,i)=>
+    `<div class="col-opt ${i===0?'sel':''}" style="background:${c}" onclick="pickCol('${c}',this,'ev')"></div>`).join('');
+  openM('m-event');
+}
+function saveEv(){
+  const title = document.getElementById('ev-title').value.trim();
+  const date  = document.getElementById('ev-date').value;
+  const desc  = document.getElementById('ev-desc').value.trim();
+  if(!title||!date){alert('제목과 날짜를 입력해주세요');return}
+  evts.push({id:Date.now(),title,date,desc,color:selEvCol});
+  sd(SK.ev,evts); closeM('m-event'); renderCal();
+}
+function delEv(id){
+  if(!confirm('이 일정을 삭제할까요?'))return;
+  evts = evts.filter(e=>e.id!==id);
+  sd(SK.ev,evts); renderCal();
+}
+
+// ============================================================
+//  SETTINGS
+// ============================================================
+function openSettings(){
+  document.getElementById('s-name').value = cfg.name;
+  document.getElementById('s-msg').value  = cfg.msg;
+  openM('m-settings');
+}
+function saveSettings(){
+  cfg.name = document.getElementById('s-name').value.trim()||'우리 가족';
+  cfg.msg  = document.getElementById('s-msg').value.trim()||'함께하는 모든 순간이 소중한 추억이 됩니다';
+  sd(SK.set,cfg); closeM('m-settings'); renderHome();
+}
+
+// ============================================================
+//  MODAL HELPERS
+// ============================================================
+function openM(id){document.getElementById(id).classList.add('active');document.body.style.overflow='hidden'}
+function closeM(id){document.getElementById(id).classList.remove('active');document.body.style.overflow=''}
+document.querySelectorAll('.modal-bg').forEach(bg=>{
+  bg.addEventListener('click',e=>{if(e.target===bg){bg.classList.remove('active');document.body.style.overflow=''}});
+});
+
+// ============================================================
+//  UTILS
+// ============================================================
+function esc(s){if(!s)return'';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function escA(s){if(!s)return'';return String(s).replace(/'/g,'&#39;').replace(/"/g,'&quot;')}
+function fmtDate(iso){if(!iso)return'';const d=new Date(iso);return`${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`}
+function fmtDateSimple(ds){if(!ds)return'';const p=ds.split('-');return`${parseInt(p[1])}월 ${parseInt(p[2])}일`}
+
+// Keyboard
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){
+    document.querySelectorAll('.modal-bg.active').forEach(m=>{m.classList.remove('active')});
+    closeLB();
+    document.body.style.overflow='';
+  }
+});
+
+// ============================================================
+//  CLOUD SYNC — jsonblob.com (버튼 하나로 자동 생성!)
+// ============================================================
+(function(){
+  let blobId = localStorage.getItem('blob_id') || null;
+  let blobConnected = false;
+  let blobPoll = null;
+  const JB = 'https://jsonblob.com/api/jsonBlob';
+
+  async function blobGet() {
+    const res = await fetch(`${JB}/${blobId}`, {
+      headers: {'Accept': 'application/json'}
+    });
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+    return res.json();
+  }
+
+  async function blobPut(data) {
+    const res = await fetch(`${JB}/${blobId}`, {
+      method: 'PUT',
+      headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+      body: JSON.stringify(data)
+    });
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+    return res.json();
+  }
+
+  async function blobCreate() {
+    const res = await fetch(JB, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+      body: JSON.stringify(getAllData())
+    });
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+    const loc = res.headers.get('Location') || '';
+    return loc.split('/').pop();
+  }
+
+  function getAllData() { return {fam, gal, board, evts, cfg}; }
+
+  window.fbWrite = function() {
+    if(!blobId) return;
+    blobPut(getAllData()).catch(e => console.warn('blob write:', e));
+  };
+
+  async function blobLoad() {
+    if(!blobId) return false;
+    try {
+      const data = await blobGet();
+      if(data && typeof data === 'object') {
+        const prev = JSON.stringify({fam,gal,board,evts,cfg});
+        if(Array.isArray(data.fam) && data.fam.length) fam = data.fam;
+        if(Array.isArray(data.gal)) gal = data.gal;
+        if(Array.isArray(data.board)) board = data.board;
+        if(Array.isArray(data.evts)) evts = data.evts;
+        if(data.cfg) cfg = Object.assign({}, cfg, data.cfg);
+        if(JSON.stringify({fam,gal,board,evts,cfg}) !== prev) renderCurrent();
+        blobConnected = true; updateBadge(true); return true;
+      }
+    } catch(e) { blobConnected = false; updateBadge(false, e.message); }
+    return false;
+  }
+
+  function renderCurrent() {
+    if(curSec==='home') renderHome();
+    else if(curSec==='family') renderFam();
+    else if(curSec==='gallery') renderGal();
+    else if(curSec==='board') renderBoard();
+    else if(curSec==='calendar') renderCal();
+  }
+
+  function updateBadge(ok, msg) {
+    const b = document.getElementById('fb-badge'); if(!b) return;
+    if(!blobId) { b.style.display='none'; return; }
+    b.style.display = 'inline-flex';
+    b.style.background = ok ? '#00b894' : '#e17055';
+    b.textContent = ok ? '☁️ 공유중' : '⚠️ 오프라인';
+    b.title = ok ? '클라우드 동기화 중 · 클릭하면 설정' : (msg||'연결 오류') + ' · 클릭하면 설정';
+  }
+
+  function startPoll() {
+    if(blobPoll) clearInterval(blobPoll);
+    blobPoll = setInterval(blobLoad, 8000);
+  }
+  function stopPoll() { if(blobPoll){ clearInterval(blobPoll); blobPoll=null; } }
+
+  function showShareBox(id) {
+    const box = document.getElementById('cloud-share-box');
+    const idEl = document.getElementById('cloud-share-id');
+    if(box && idEl) { idEl.textContent = id; box.style.display='block'; }
+    const newSec = document.getElementById('cloud-new-section');
+    if(newSec) newSec.style.display='none';
+  }
+
+  window.copyShareId = function() {
+    const id = document.getElementById('cloud-share-id').textContent;
+    navigator.clipboard.writeText(id).then(()=>alert('✅ ID가 복사됐어요!\n가족에게 이 ID를 카톡으로 보내주세요 😊'));
+  };
+
+  window.openCloudSetup = function() {
+    document.getElementById('jb-bin-input').value = blobId || '';
+    const st = document.getElementById('cloud-status');
+    if(blobId) {
+      st.style.display='block';
+      st.style.color = blobConnected ? '#00b894' : '#e17055';
+      st.textContent = blobConnected ? '✅ 현재 연결됨 · ID: ' + blobId : '⚠️ 현재 연결 오류';
+      const newSec = document.getElementById('cloud-new-section');
+      if(newSec) newSec.style.display='none';
+    } else {
+      st.style.display='none';
+      const newSec = document.getElementById('cloud-new-section');
+      if(newSec) newSec.style.display='block';
+    }
+    openM('m-cloud');
+  };
+
+  window.createNewCloud = async function() {
+    const btn = document.getElementById('cloud-create-btn');
+    btn.textContent = '⏳ 만드는 중...'; btn.disabled = true;
+    try {
+      const id = await blobCreate();
+      if(!id) throw new Error('ID를 받지 못했어요');
+      blobId = id;
+      localStorage.setItem('blob_id', blobId);
+      blobConnected = true;
+      updateBadge(true);
+      startPoll();
+      showShareBox(id);
+      renderHome();
+      const st = document.getElementById('cloud-status');
+      if(st) { st.style.display='block'; st.style.color='#00b894'; st.textContent='✅ 연결 완료!'; }
+    } catch(e) {
+      alert('생성 실패: ' + e.message + '\n\n잠시 후 다시 시도해주세요.');
+    }
+    btn.textContent = '✨ 새 공유 공간 만들기'; btn.disabled = false;
+  };
+
+  window.connectCloud = async function() {
+    const id = document.getElementById('jb-bin-input').value.trim();
+    if(!id) { alert('공유 ID를 입력해주세요.'); return; }
+    blobId = id;
+    localStorage.setItem('blob_id', blobId);
+    const btn = document.getElementById('cloud-connect-btn');
+    btn.textContent = '연결 중...'; btn.disabled = true;
+    const ok = await blobLoad();
+    btn.textContent = '☁️ 연결하기'; btn.disabled = false;
+    if(ok) {
+      startPoll(); closeM('m-cloud'); renderCurrent();
+      alert('✅ 연결 성공! 가족과 데이터를 공유합니다 🎉');
+    } else {
+      blobId=null; localStorage.removeItem('blob_id'); updateBadge(false);
+      alert('❌ 연결 실패\n공유 ID를 다시 확인해주세요.');
+    }
+  };
+
+  window.disconnectCloud = function() {
+    blobId=null; localStorage.removeItem('blob_id');
+    stopPoll(); blobConnected=false; updateBadge(false);
+    closeM('m-cloud');
+  };
+
+  // Auto-connect on load
+  if(blobId) { blobLoad().then(ok => { if(ok) startPoll(); else updateBadge(false); }); }
+  else { document.getElementById('fb-badge').style.display = 'none'; }
+})();
+
+// ============================================================
+//  AVATAR SYSTEM
+// ============================================================
+const MOODS = [
+  '😊 행복해요','😄 신나요','😍 사랑해요','😴 졸려요','😩 피곤해요',
+  '😢 슬퍼요','😠 화났어요','🤒 아파요','🥺 쑥스러워요','😮 놀랐어요',
+  '😎 멋있어요','😋 배고파요','🤔 생각중','😤 뿌듯해요','🥳 신남!'
+];
+
+let avatarPickerId = null;
+
+function getHairSvg(role) {
+  const hc = {
+    '아빠':'#2C1A10','엄마':'#7B4A2A','아들':'#1A0D08','딸':'#5C3317','막내':'#2C4A8C'
+  }[role] || '#2C1A10';
+  if(role==='아빠') return {
+    b:'',
+    f:`<ellipse cx="50" cy="28" rx="28" ry="15" fill="${hc}"/><rect x="22" y="28" width="56" height="9" fill="${hc}"/>`
+  };
+  if(role==='엄마') return {
+    b:`<rect x="17" y="34" width="12" height="48" rx="6" fill="${hc}"/><rect x="71" y="34" width="12" height="48" rx="6" fill="${hc}"/>`,
+    f:`<ellipse cx="50" cy="26" rx="28" ry="17" fill="${hc}"/><rect x="17" y="34" width="9" height="28" rx="4" fill="${hc}"/><rect x="74" y="34" width="9" height="28" rx="4" fill="${hc}"/>`
+  };
+  if(role==='아들') return {
+    b:'',
+    f:`<ellipse cx="50" cy="27" rx="27" ry="13" fill="${hc}"/><ellipse cx="34" cy="22" rx="11" ry="8" fill="${hc}"/><ellipse cx="50" cy="19" rx="9" ry="8" fill="${hc}"/><ellipse cx="66" cy="22" rx="11" ry="8" fill="${hc}"/>`
+  };
+  if(role==='딸') {
+    const rc = '#FF8FAB'; // ribbon color (pink)
+    return {
+      b:`<circle cx="19" cy="39" r="14" fill="${hc}"/><circle cx="81" cy="39" r="14" fill="${hc}"/>`,
+      f:`<ellipse cx="50" cy="26" rx="28" ry="16" fill="${hc}"/>
+         <circle cx="19" cy="39" r="11" fill="${hc}"/>
+         <circle cx="81" cy="39" r="11" fill="${hc}"/>
+         <!-- left ribbon -->
+         <ellipse cx="16" cy="31" rx="7" ry="5" fill="${rc}" transform="rotate(-30,16,31)"/>
+         <ellipse cx="22" cy="28" rx="7" ry="5" fill="${rc}" transform="rotate(30,22,28)"/>
+         <circle cx="19" cy="30" r="4" fill="#FFB3C6"/>
+         <!-- right ribbon -->
+         <ellipse cx="78" cy="31" rx="7" ry="5" fill="${rc}" transform="rotate(30,78,31)"/>
+         <ellipse cx="84" cy="28" rx="7" ry="5" fill="${rc}" transform="rotate(-30,84,28)"/>
+         <circle cx="81" cy="30" r="4" fill="#FFB3C6"/>
+         <!-- blush always on for girl -->
+         <circle cx="30" cy="59" r="6" fill="#FFB3BA" opacity=".5"/>
+         <circle cx="70" cy="59" r="6" fill="#FFB3BA" opacity=".5"/>`
+    };
+  }
+  // 막내 default
+  return {
+    b:'',
+    f:`<ellipse cx="50" cy="30" rx="26" ry="13" fill="${hc}"/><ellipse cx="50" cy="23" rx="12" ry="9" fill="${hc}"/>`
+  };
+}
+
+function genAvatar(role, mi) {
+  const skin = '#FECBA1';
+  const BG = [
+    '#FFE5E5','#FFD9CC','#FFF0F9','#DAE8FF','#DFF5E4',
+    '#FFF0D6','#F0E0FF','#D6FFF5','#FFD6E8','#D6F5FF',
+    '#FFFFF0','#EBD6FF','#D6FFEC','#FFD6D6','#E8E0FF'
+  ];
+  const bg = BG[mi] || BG[0];
+  const h = getHairSvg(role);
+
+  const brows = [
+    `<path d="M33,41Q39,37 45,41" stroke="#444" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M55,41Q61,37 67,41" stroke="#444" stroke-width="2" fill="none" stroke-linecap="round"/>`,
+    `<path d="M33,39Q39,34 45,39" stroke="#444" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M55,39Q61,34 67,39" stroke="#444" stroke-width="2" fill="none" stroke-linecap="round"/>`,
+    `<path d="M33,41Q39,37 45,41" stroke="#444" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M55,41Q61,37 67,41" stroke="#444" stroke-width="2" fill="none" stroke-linecap="round"/>`,
+    `<path d="M33,42L45,43" stroke="#777" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M55,42L67,43" stroke="#777" stroke-width="2" fill="none" stroke-linecap="round"/>`,
+    `<path d="M33,43L45,43" stroke="#777" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M55,43L67,43" stroke="#777" stroke-width="2" fill="none" stroke-linecap="round"/>`,
+    `<path d="M35,39Q39,44 43,39" stroke="#555" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M57,39Q61,44 65,39" stroke="#555" stroke-width="2" fill="none" stroke-linecap="round"/>`,
+    `<path d="M33,40L45,44" stroke="#222" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M55,44L67,40" stroke="#222" stroke-width="2.5" fill="none" stroke-linecap="round"/>`,
+    `<path d="M33,42L45,42" stroke="#999" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M55,42L67,42" stroke="#999" stroke-width="2" fill="none" stroke-linecap="round"/>`,
+    `<path d="M33,41Q39,37 45,41" stroke="#444" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M55,41Q61,37 67,41" stroke="#444" stroke-width="2" fill="none" stroke-linecap="round"/>`,
+    `<path d="M33,38Q39,33 45,38" stroke="#333" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M55,38Q61,33 67,38" stroke="#333" stroke-width="2.5" fill="none" stroke-linecap="round"/>`,
+    `<path d="M33,42L45,42" stroke="#333" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M55,42L67,42" stroke="#333" stroke-width="2" fill="none" stroke-linecap="round"/>`,
+    `<path d="M33,41Q39,37 45,41" stroke="#444" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M55,41Q61,37 67,41" stroke="#444" stroke-width="2" fill="none" stroke-linecap="round"/>`,
+    `<path d="M33,41Q39,38 45,42" stroke="#444" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M56,40Q62,36 68,40" stroke="#444" stroke-width="2" fill="none" stroke-linecap="round"/>`,
+    `<path d="M33,40Q39,36 45,40" stroke="#333" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M55,40Q61,36 67,40" stroke="#333" stroke-width="2" fill="none" stroke-linecap="round"/>`,
+    `<path d="M33,38Q39,33 45,38" stroke="#444" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M55,38Q61,33 67,38" stroke="#444" stroke-width="2.5" fill="none" stroke-linecap="round"/>`
+  ];
+
+  const eyes = [
+    `<path d="M33,49Q39,44 45,49" stroke="#333" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M55,49Q61,44 67,49" stroke="#333" stroke-width="2.5" fill="none" stroke-linecap="round"/>`,
+    `<circle cx="39" cy="48" r="6.5" fill="white"/><circle cx="61" cy="48" r="6.5" fill="white"/><circle cx="40" cy="49" r="4" fill="#222"/><circle cx="62" cy="49" r="4" fill="#222"/><circle cx="41" cy="47" r="1.5" fill="white"/><circle cx="63" cy="47" r="1.5" fill="white"/>`,
+    `<text x="30" y="53" font-size="15" fill="#FF6B6B">♥</text><text x="53" y="53" font-size="15" fill="#FF6B6B">♥</text>`,
+    `<path d="M33,46Q39,52 45,46" stroke="#333" stroke-width="2.5" fill="${skin}" stroke-linecap="round"/><line x1="33" y1="46" x2="45" y2="46" stroke="#333" stroke-width="2"/><path d="M55,46Q61,52 67,46" stroke="#333" stroke-width="2.5" fill="${skin}" stroke-linecap="round"/><line x1="55" y1="46" x2="67" y2="46" stroke="#333" stroke-width="2"/>`,
+    `<path d="M33,48Q39,52 45,48" stroke="#666" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M55,48Q61,52 67,48" stroke="#666" stroke-width="2.5" fill="none" stroke-linecap="round"/>`,
+    `<circle cx="39" cy="49" r="6" fill="white"/><circle cx="61" cy="49" r="6" fill="white"/><circle cx="39" cy="50" r="3.5" fill="#555"/><circle cx="61" cy="50" r="3.5" fill="#555"/>`,
+    `<path d="M33,49Q39,53 45,49" stroke="#333" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M55,49Q61,53 67,49" stroke="#333" stroke-width="2.5" fill="none" stroke-linecap="round"/>`,
+    `<text x="32" y="53" font-size="13" fill="#bbb">✕</text><text x="54" y="53" font-size="13" fill="#bbb">✕</text>`,
+    `<path d="M34,49Q39,45 44,49" stroke="#333" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M56,49Q61,45 66,49" stroke="#333" stroke-width="2.5" fill="none" stroke-linecap="round"/>`,
+    `<circle cx="39" cy="48" r="7.5" fill="white"/><circle cx="61" cy="48" r="7.5" fill="white"/><circle cx="39" cy="49" r="4.5" fill="#111"/><circle cx="61" cy="49" r="4.5" fill="#111"/><circle cx="40" cy="47" r="1.8" fill="white"/><circle cx="62" cy="47" r="1.8" fill="white"/>`,
+    `<path d="M33,46Q39,43 45,46" stroke="#333" stroke-width="3" fill="${skin}" stroke-linecap="round"/><circle cx="39" cy="49" r="4" fill="#333"/><path d="M55,46Q61,43 67,46" stroke="#333" stroke-width="3" fill="${skin}" stroke-linecap="round"/><circle cx="61" cy="49" r="4" fill="#333"/>`,
+    `<path d="M33,49Q39,44 45,49" stroke="#333" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M55,49Q61,44 67,49" stroke="#333" stroke-width="2.5" fill="none" stroke-linecap="round"/>`,
+    `<path d="M33,49Q39,45 45,49" stroke="#333" stroke-width="2.5" fill="none" stroke-linecap="round"/><circle cx="61" cy="48" r="6" fill="white"/><circle cx="61" cy="49" r="3.5" fill="#555"/>`,
+    `<path d="M33,48Q39,43 45,48" stroke="#333" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M55,48Q61,43 67,48" stroke="#333" stroke-width="2.5" fill="none" stroke-linecap="round"/>`,
+    `<text x="30" y="52" font-size="14">⭐</text><text x="53" y="52" font-size="14">⭐</text>`
+  ];
+
+  const mouths = [
+    `<path d="M38,64Q50,73 62,64" stroke="#333" stroke-width="2.5" fill="#FF9999" stroke-linecap="round"/>`,
+    `<path d="M35,62Q50,75 65,62" stroke="#333" stroke-width="2.5" fill="#FF9999" stroke-linecap="round"/>`,
+    `<path d="M40,65Q50,72 60,65" stroke="#333" stroke-width="2.5" fill="#FF9999" stroke-linecap="round"/>`,
+    `<path d="M40,65Q50,68 60,65" stroke="#666" stroke-width="2" fill="none" stroke-linecap="round"/>`,
+    `<path d="M40,67Q50,63 60,67" stroke="#666" stroke-width="2" fill="none" stroke-linecap="round"/>`,
+    `<path d="M38,68Q50,62 62,68" stroke="#666" stroke-width="2.5" fill="none" stroke-linecap="round"/>`,
+    `<path d="M38,68Q50,63 62,68" stroke="#333" stroke-width="2.5" fill="none" stroke-linecap="round"/>`,
+    `<path d="M38,65Q43,61 48,65Q53,69 58,65Q63,61 66,65" stroke="#999" stroke-width="2" fill="none" stroke-linecap="round"/>`,
+    `<path d="M42,65Q50,70 58,65" stroke="#333" stroke-width="2.5" fill="#FF9999" stroke-linecap="round"/>`,
+    `<ellipse cx="50" cy="67" rx="8" ry="6" fill="#333"/><ellipse cx="50" cy="67" rx="6" ry="4.5" fill="#FF9999"/>`,
+    `<path d="M42,65Q50,69 56,63" stroke="#333" stroke-width="2.5" fill="none" stroke-linecap="round"/>`,
+    `<path d="M38,64Q50,73 62,64" stroke="#333" stroke-width="2.5" fill="#FF9999" stroke-linecap="round"/><ellipse cx="50" cy="72" rx="7" ry="5" fill="#FF6B9D"/>`,
+    `<path d="M41,65Q49,69 57,64" stroke="#666" stroke-width="2.5" fill="none" stroke-linecap="round"/>`,
+    `<path d="M36,63Q50,75 64,63" stroke="#333" stroke-width="2.5" fill="#FF9999" stroke-linecap="round"/>`,
+    `<path d="M34,61Q50,77 66,61" stroke="#333" stroke-width="2.5" fill="#FF9999"/><path d="M40,66Q50,74 60,66" stroke="white" stroke-width="2" fill="none"/>`
+  ];
+
+  const extras = [
+    '','','',
+    `<text x="67" y="37" font-size="12" fill="#a0aec0">💤</text>`,
+    `<circle cx="70" cy="40" r="3.5" fill="#AEE6FF" opacity=".8"/><ellipse cx="70" cy="46" rx="2.5" ry="4" fill="#AEE6FF" opacity=".8"/>`,
+    `<ellipse cx="35" cy="58" rx="2.5" ry="5" fill="#74B9FF"/>`,
+    '','',
+    `<circle cx="30" cy="58" r="6" fill="#FFB3BA" opacity=".6"/><circle cx="70" cy="58" r="6" fill="#FFB3BA" opacity=".6"/>`,
+    '','','',
+    `<text x="67" y="40" font-size="12">💭</text>`,
+    `<text x="65" y="35" font-size="12">✨</text>`,
+    `<text x="13" y="35" font-size="12">🎉</text><text x="70" y="35" font-size="12">🎉</text>`
+  ];
+
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+    <circle cx="50" cy="50" r="50" fill="${bg}"/>
+    <rect x="43" y="79" width="14" height="11" rx="3" fill="${skin}"/>
+    ${h.b||''}
+    <ellipse cx="50" cy="55" rx="28" ry="30" fill="${skin}"/>
+    <ellipse cx="22" cy="54" rx="5" ry="7" fill="${skin}"/>
+    <ellipse cx="78" cy="54" rx="5" ry="7" fill="${skin}"/>
+    ${h.f||''}
+    ${brows[mi]||brows[0]}
+    ${eyes[mi]||eyes[0]}
+    ${mouths[mi]||mouths[0]}
+    ${extras[mi]||''}
+  </svg>`;
+}
+
+function openAvatarPicker(id) {
+  avatarPickerId = id;
+  const m = fam.find(x=>x.id===id);
+  if(!m) return;
+  const cur = m.avatarMood !== undefined ? m.avatarMood : 0;
+  document.getElementById('av-grid').innerHTML = MOODS.map((label, i) => `
+    <div class="av-opt ${i===cur?'sel':''}" onclick="selectAvatar(${i})" title="${label}">
+      ${genAvatar(m.role, i)}
+      <div class="av-label">${label}</div>
+    </div>`).join('');
+  openM('m-avatar');
+}
+
+function selectAvatar(mi) {
+  if(!avatarPickerId) return;
+  const idx = fam.findIndex(m=>m.id===avatarPickerId);
+  if(idx===-1) return;
+  fam[idx].avatarMood = mi;
+  fam[idx].photo = null;
+  sd(SK.fam, fam);
+  closeM('m-avatar');
+  renderFam();
+}
+
+function onAvatarPhotoUpload(input) {
+  const file = input.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const idx = fam.findIndex(m=>m.id===avatarPickerId);
+    if(idx===-1) return;
+    fam[idx].photo = e.target.result;
+    try { sd(SK.fam, fam); } catch(err) { fam[idx].photo=null; alert('사진 용량이 너무 큽니다.'); return; }
+    closeM('m-avatar');
+    renderFam();
+  };
+  reader.readAsDataURL(file);
+}
+
+// ============================================================
+//  INIT
+// ============================================================
+renderHome();
+</script>
+</body>
+</html>
